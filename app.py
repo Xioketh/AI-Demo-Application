@@ -135,8 +135,6 @@ with tab4:
 
     import streamlit as st
 
-    st.title("📧 Email Spam Classifier")
-
     st.markdown("""
     ### 🛠️ Technologies Used:
     - **Logistic Regression (Binary Classification)**: To classify messages as spam or ham.
