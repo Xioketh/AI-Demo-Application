@@ -5,7 +5,7 @@ from joblib import load
 
 
 
-tab1, tab2, tab3 = st.tabs(["🏠 Housing Price Predictor", "Dog", "Owl"])
+tab1, tab2, tab3 = st.tabs(["🏠 Housing Price Predictor", "🌸 Iris Flower Classification", "Owl"])
 
 with tab1:
     # Load the saved model
@@ -68,8 +68,25 @@ with tab1:
     # """)
 
 with tab2:
-    st.header("A dog")
-    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+    model = load("iris_model.pkl")
+
+    # Class names
+    class_names = ["Setosa", "Versicolor", "Virginica"]
+    st.write("Enter flower measurements to predict its species.")
+
+    # Input sliders
+    sepal_length = st.slider("Sepal Length (cm)", 4.0, 8.0, 5.1)
+    sepal_width = st.slider("Sepal Width (cm)", 2.0, 4.5, 3.5)
+    petal_length = st.slider("Petal Length (cm)", 1.0, 7.0, 1.4)
+    petal_width = st.slider("Petal Width (cm)", 0.1, 2.5, 0.2)
+
+    # Predict
+    if st.button("Predict"):
+        input_data = pd.DataFrame([[sepal_length, sepal_width, petal_length, petal_width]],
+                                  columns=["sepal length (cm)", "sepal width (cm)", "petal length (cm)",
+                                           "petal width (cm)"])
+        prediction = model.predict(input_data)[0]
+        st.success(f"The predicted species is: **{class_names[prediction]}**")
 with tab3:
     st.header("An owl")
     st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
