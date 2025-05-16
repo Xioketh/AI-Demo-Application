@@ -3,12 +3,10 @@ import pandas as pd
 import pickle
 from joblib import load
 
-
-
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏠 Housing Price Predictor",
                             "🌸 Iris Flower Classification",
                             "🧠 Customer Segmentation",
-                            "📦 Email Spam Classification",
+                            "📧 Email Spam Classification",
                             "🎬 Movie Review Analysis"
                             ])
 
@@ -60,17 +58,14 @@ with tab1:
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
-    # Add some explanation
-    # st.markdown("""
-    # ### How It Works
-    # 1. Adjust the house features using the sliders and dropdown
-    # 2. Click the "Predict Price" button
-    # 3. The model will calculate the price based on:
-    #    - Area (square footage)
-    #    - Number of bedrooms
-    #    - Location
-    #    - Bedroom Size (automatically calculated as Area/Bedrooms)
-    # """)
+    st.markdown("""
+    ### 🛠️ Technologies Used:
+    - **Linear Regression (Multiple Variables)**: To predict house prices.
+    - **One Hot Encoding**: Used `OneHotEncoder` to handle the `Location` feature.
+    - **Training and Testing Split**: Data was split using `train_test_split`.
+    - **Pipeline**: Combined preprocessing and model using `Pipeline`.
+    - **Model Deployment**: App built using **Streamlit**.
+    """)
 
 with tab2:
     model = load("trained_models/iris_model.pkl")
@@ -92,6 +87,16 @@ with tab2:
                                            "petal width (cm)"])
         prediction = model.predict(input_data)[0]
         st.success(f"The predicted species is: **{class_names[prediction]}**")
+
+    st.markdown("""
+    ### 🛠️ Technologies Used:
+    - **Logistic Regression (Multiclass Classification)**: For classifying Iris-setosa, Iris-versicolor, Iris-virginica.
+    - **StandardScaler**: Used to normalize feature values.
+    - **Pipeline**: For seamless integration of scaling and modeling.
+    - **Training and Testing Split**: To evaluate model performance.
+    - **Model Saving**: Exported using `joblib`.
+    - **Model Deployment**: Interactive interface with **Streamlit**.
+    """)
 with tab3:
     model_data = load("trained_models/customer_segmentation_model.pkl")
     scaler = model_data["scaler"]
@@ -111,8 +116,36 @@ with tab3:
         cluster = kmeans.predict(scaled)[0]
         st.success(f"🧾 The customer belongs to **Segment {cluster}**")
 
+    st.markdown("""
+    ### 🛠️ Technologies Used:
+    - **K Means Clustering Algorithm**: Grouped customers into clusters based on income and spending.
+    - **StandardScaler**: Standardized data before clustering.
+    - **PCA (Principal Component Analysis)**: Reduced features to 2D for visualization.
+    - **Model Saving**: Saved using `joblib` for reuse.
+    - **Model Deployment**: Visualized and interacted using **Streamlit**.
+    """)
+
 with tab4:
-    st.header('Null')
+    model = load("trained_models/spam_classifier.pkl")
+    email = st.text_area("Enter email content:")
+
+    if st.button("Check Spam"):
+        pred = model.predict([email])[0]
+        st.success("This is SPAM!" if pred == 1 else "This is NOT spam.")
+
+    import streamlit as st
+
+    st.title("📧 Email Spam Classifier")
+
+    st.markdown("""
+    ### 🛠️ Technologies Used:
+    - **Logistic Regression (Binary Classification)**: To classify messages as spam or ham.
+    - **TF-IDF Vectorization**: Converted text to numerical values.
+    - **Pipeline**: Combined TF-IDF and classifier.
+    - **Training and Testing Split**: Ensured accurate model evaluation.
+    - **Model Saving**: Used `joblib` for persistence.
+    - **Model Deployment**: Interactive UI created with **Streamlit**.
+    """)
 
 with tab5:
     model = load("trained_models/sentiment_model.pkl")
@@ -121,6 +154,17 @@ with tab5:
     if st.button("Analyze"):
         prediction = model.predict([review])[0]
         st.success("Positive Review 🎉" if prediction == 1 else "Negative Review 😞")
+
+    st.markdown("""
+    ### 🛠️ Technologies Used:
+    - **Logistic Regression, SVM, Random Forest**: Tested multiple models for comparison.
+    - **TF-IDF & Count Vectorizer**: Text vectorization methods.
+    - **Text Preprocessing**: Cleaned and lemmatized reviews using NLTK.
+    - **Hyperparameter Tuning (GridSearchCV)**: Optimized model performance.
+    - **L1 and L2 Regularization**: Applied in logistic regression.
+    - **Evaluation**: Used accuracy score and classification report.
+    - **Deployment**: Built and served using **Streamlit**.
+    """)
 
 # Optional: Add a footer
 st.markdown("---")
