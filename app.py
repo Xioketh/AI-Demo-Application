@@ -145,4 +145,4 @@ elif option == "Movie Review Analysis":
 
 # Footer
 st.markdown("---")
-st.markdown("*Note: This is a demo application using pre-trained models.*")
+st.markdown("*Note: The underlying models in this application were trained using demonstration datasets for illustrative purposes.*")
