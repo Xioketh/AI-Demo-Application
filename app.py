@@ -1,14 +1,16 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from joblib import load
+
 
 
 tab1, tab2, tab3 = st.tabs(["🏠 Housing Price Predictor", "Dog", "Owl"])
 
 with tab1:
     # Load the saved model
-    with open('house_price_predict_model', 'rb') as f:
-        model = pickle.load(f)
+    model = load('house_price_predict_model.joblib')
+
 
     # Streamlit app
     # st.title('🏠 Housing Price Predictor')
