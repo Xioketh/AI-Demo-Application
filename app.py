@@ -5,7 +5,7 @@ from joblib import load
 # Sidebar navigation
 st.sidebar.title("Choose a Predictor")
 option = st.sidebar.radio("Go to", [
-    "Housing Price ",
+    "Housing Price Predictor",
     "Iris Flower Classification",
     "Customer Segmentation",
     "Email Spam Classification",
