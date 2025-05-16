@@ -5,11 +5,16 @@ from joblib import load
 
 
 
-tab1, tab2, tab3 = st.tabs(["🏠 Housing Price Predictor", "🌸 Iris Flower Classification", "Owl"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏠 Housing Price Predictor",
+                            "🌸 Iris Flower Classification",
+                            "🧠 Customer Segmentation",
+                            "📦 Email Spam Classification",
+                            "🎬 Movie Review Analysis"
+                            ])
 
 with tab1:
     # Load the saved model
-    model = load('house_price_predict_model.joblib')
+    model = load('trained_models/house_price_predict_model.joblib')
 
 
     # Streamlit app
@@ -68,7 +73,7 @@ with tab1:
     # """)
 
 with tab2:
-    model = load("iris_model.pkl")
+    model = load("trained_models/iris_model.pkl")
 
     # Class names
     class_names = ["Setosa", "Versicolor", "Virginica"]
@@ -88,9 +93,34 @@ with tab2:
         prediction = model.predict(input_data)[0]
         st.success(f"The predicted species is: **{class_names[prediction]}**")
 with tab3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+    model_data = load("trained_models/customer_segmentation_model.pkl")
+    scaler = model_data["scaler"]
+    kmeans = model_data["kmeans"]
+    pca = model_data["pca"]
 
+    st.write("Predict the customer segment based on income and spending score.")
+
+    # Input sliders
+    income = st.slider("Annual Income (k$)", 10.0, 150.0, 60.0)
+    score = st.slider("Spending Score (1-100)", 1.0, 100.0, 50.0)
+
+    # Predict
+    if st.button("Segment Customer"):
+        input_df = pd.DataFrame([[income, score]], columns=["Annual Income (k$)", "Spending Score"])
+        scaled = scaler.transform(input_df)
+        cluster = kmeans.predict(scaled)[0]
+        st.success(f"🧾 The customer belongs to **Segment {cluster}**")
+
+with tab4:
+    st.header('Null')
+
+with tab5:
+    model = load("trained_models/sentiment_model.pkl")
+    review = st.text_area("Enter movie review:")
+
+    if st.button("Analyze"):
+        prediction = model.predict([review])[0]
+        st.success("Positive Review 🎉" if prediction == 1 else "Negative Review 😞")
 
 # Optional: Add a footer
 st.markdown("---")
